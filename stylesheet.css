@@ -1,8 +1,4 @@
-body{
-   display: flex;
-   flex-direction: row;
- }
-
- main{
-   display:inline-flex;
- }
+#show-image {
+  display: flex;
+align-items: flex-start;
+}
