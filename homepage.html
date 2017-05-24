@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="chart.js"></script>
+    <title>Bus Mall</title>
+  </head>
+  <body>
+    <header>
+      <h1>Bus Mall Market Study</h1>
+      <!-- <img class="bus" src="imgs/bus.gif"/> -->
+    </header>
+    <main>
+      <section class="instructions">
+        <p>Welcome to the Bus Mall Market Survey. You will be shown 3 pictures below, please click on the product you would most likely purchase.  Pictures will be displayed 25 times and you will have the option to select 10 more at the end if you so desire. Thank you for your participation.</p>
+      </section>
+      <section id="products">
+      </section>
+      <section id="results">
+        <button id="results-button" hidden>View Results</button>
+        <button id="more-tries-button" hidden>10 More Choices</button>
+        <canvas id="results-chart" width="900" height="400" hidden></canvas>
+      </section>
+    </main>
+    <footer>
+    </footer>
+    <script type="text/javascript" src="app.js"></script>
+  </body>
+</html>
