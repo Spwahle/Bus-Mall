@@ -1,48 +1,47 @@
-var randomImg = [];
-var runningTotal = [];
+var imgArray = [];
 var labelMyImages = [];
 var timesOnScreen = [];
 var timesBeenClicked = [];
 var newClick = document.getElementById('show-image');
 var onlyClicks = 0;
-//var chartDrawn = false;
+
 
 var showImg = document.getElementById('show-image');
 var button2 = document.getElementById('button2');
 var button3 = document.getElementById('button3');
-var myChart = document.getElementById('my-chart');
-var myChart3 = document.getElementById('my-chart3');
 
-//Img constructor function
-function Picture(imgName, filePath) {
+
+//Img constructor function with attributes
+function Images(imgName, filePath) {
   this.imgName = imgName;
   this.filePath = filePath;
   this.newPath = 'img/' + this.filePath + ' />';
   this.timesShown = 0;
   this.timesClicked = 0;
-  //randomImg.push(this);
+  //imgArray.push(this);
 }
 
 //pushing in array
-randomImg.push(new Picture('bag','bag.jpg'));
-randomImg.push(new Picture('banana', 'banana.jpg'));
-randomImg.push(new Picture('bathroom', 'bathroom.jpg'));
-randomImg.push(new Picture('boots', 'boots.jpg'));
-randomImg.push(new Picture('breakfast', 'breakfast.jpg'));
-randomImg.push(new Picture('bubblegum', 'bubblegum.jpg'));
-randomImg.push(new Picture('chair', 'chair.jpg'));
-randomImg.push(new Picture('cthulhu', 'cthulhu.jpg'));
-randomImg.push(new Picture('dogDuck', 'dogDuck.jpg'));
-randomImg.push(new Picture('dragon', 'dragon.jpg'));
-randomImg.push(new Picture('pen', 'pen.jpg'));
-randomImg.push(new Picture('petSweep', 'petSweep.jpg'));
-randomImg.push(new Picture('scissors', 'scissors.jpg'));
-randomImg.push(new Picture('tauntaun', 'tauntaun.jpg'));
-randomImg.push(new Picture('unicorn', 'unicorn.jpg'));
-randomImg.push(new Picture('usb2', 'usb2.gif'));
-randomImg.push(new Picture('waterCan', 'waterCan.jpg'));
-randomImg.push(new Picture('wineGlass', 'wineGlass.jpg'));
-
+function BuildArray() {
+  imgArray.push(new Images('bag','bag.jpg'));
+  imgArray.push(new Images('banana', 'banana.jpg'));
+  imgArray.push(new Images('bathroom', 'bathroom.jpg'));
+  imgArray.push(new Images('boots', 'boots.jpg'));
+  imgArray.push(new Images('breakfast', 'breakfast.jpg'));
+  imgArray.push(new Images('bubblegum', 'bubblegum.jpg'));
+  imgArray.push(new Images('chair', 'chair.jpg'));
+  imgArray.push(new Images('cthulhu', 'cthulhu.jpg'));
+  imgArray.push(new Images('dogDuck', 'dogDuck.jpg'));
+  imgArray.push(new Images('dragon', 'dragon.jpg'));
+  imgArray.push(new Images('pen', 'pen.jpg'));
+  imgArray.push(new Images('petSweep', 'petSweep.jpg'));
+  imgArray.push(new Images('scissors', 'scissors.jpg'));
+  imgArray.push(new Images('tauntaun', 'tauntaun.jpg'));
+  imgArray.push(new Images('unicorn', 'unicorn.jpg'));
+  imgArray.push(new Images('usb2', 'usb2.gif'));
+  imgArray.push(new Images('waterCan', 'waterCan.jpg'));
+  imgArray.push(new Images('wineGlass', 'wineGlass.jpg'));
+}
 //Array of random Numbers
 var threeDiffNums = [];
 
@@ -50,16 +49,15 @@ function makeRand(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+
 function checkRandom () {
   for (var i = 0; i < 3; i++) {
     threeDiffNums.push(makeRand(0, 17));
   }
-
   while (threeDiffNums[0] === threeDiffNums[1]) {
     console.log('Duplicate Found');
     threeDiffNums[1] = makeRand(0,17);
   }
-
   while (threeDiffNums[2] === threeDiffNums[0] || threeDiffNums[2] === threeDiffNums[1]) {
     console.log('Duplicate Found');
     threeDiffNums[2] = makeRand(0,17);
@@ -71,17 +69,17 @@ function displayImg() {
   //var showImg = document.getElementById('show-image');
   for (var q = 0; q < threeDiffNums.length; q++) {
     var divEl = document.createElement('div');
-    divEl.innerHTML = '<img src=' + randomImg[threeDiffNums[q]].newPath;
+    divEl.innerHTML = '<img src=' + imgArray[threeDiffNums[q]].newPath;
     showImg.appendChild(divEl);
-    randomImg[threeDiffNums[q]].timesShown++;
+    imgArray[threeDiffNums[q]].timesShown++;
   }
 }
 
 function gatherChartData() {
-  for (z = 0; z < randomImg.length; z++) {
-    labelMyImages.push(randomImg[z].imgName);
-    timesOnScreen.push(randomImg[z].timesShown);
-    timesBeenClicked.push(randomImg[z].timesClicked);
+  for (i = 0; i < imgArray.length; i++) {
+    labelMyImages.push(imgArray[i].imgName);
+    timesOnScreen.push(imgArray[i].timesShown);
+    timesBeenClicked.push(imgArray[i].timesClicked);
   }
 }
 
@@ -129,10 +127,10 @@ function drawChart() {
 
 function handleClick() {
   onlyClicks++;
-  console.log('you done clicked on ' + event.target.alt);
-  for (var q = 0; q < randomImg.length; q++) {
-    if (event.target.alt === randomImg[q].imgName) {
-      randomImg[q].timesClicked++;
+  console.log('Clicked ' + event.target.alt);
+  for (var q = 0; q < imgArray.length; q++) {
+    if (event.target.alt === imgArray[q].imgName) {
+      imgArray[q].timesClicked++;
     }
   }
   threeDiffNums = [];
@@ -154,7 +152,7 @@ function handleButton3() {
 }
 
 function handleButton2() {
-  console.log('you are good');
+  console.log('Done');
   drawChart();
 }
 
@@ -166,4 +164,5 @@ document.getElementById('button2').style.visibility = 'hidden';
 document.getElementById('button3').style.visibility = 'hidden';
 
 checkRandom();
+BuildArray();
 displayImg();
