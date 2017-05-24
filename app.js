@@ -1,17 +1,18 @@
 'use strict';
-
+//defining array as empty
 var productsArray = [];
+//defining name of products
 var productNamesArray = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon',
-'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
-
+  'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
+//defining path of pictures in the img file
 var productPathsArray = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg',
- 'dogDuck.jpg', 'dragon.jpg', 'pen.jpg', 'petSweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.jpg', 'tauntaun.jpg', 'unicorn.jpg', 'usb2.gif', 'waterCan.jpg', 'wineGlass.jpg'];
-
+  'dogDuck.jpg', 'dragon.jpg', 'pen.jpg', 'petSweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.jpg', 'tauntaun.jpg', 'unicorn.jpg', 'usb2.gif', 'waterCan.jpg', 'wineGlass.jpg'];
+//defining amount of tries
 var totalTries = 25;
 var triesCounter = 0;
 
-var imageSection = document.getElementById('products');
-
+var pictureSection = document.getElementById('products');
+//creating object with predefined vars
 function Product(name, pictureFilePath){
   this.name = name;
   this.pictureFilePath = pictureFilePath;
@@ -20,46 +21,47 @@ function Product(name, pictureFilePath){
 
   productsArray.push(this);
 }
-
+//function runs a loop through lenght of namesarray in which it creates objects via my constructor
 function buildArray(){
   for(var i = 0; i < productNamesArray.length; i++){
     var product = new Product(productNamesArray[i], 'img/' + productPathsArray[i]);
   }
 }
-
-function randomImage(){
+//function creates a random number to
+function randompicture(){
   var random = Math.floor(Math.random() * (productsArray.length));
   return productsArray[random];
 }
 
-function renderImageSet() {
-  var image1 = document.createElement('img');
-  var image2 = document.createElement('img');
-  var image3 = document.createElement('img');
-  var random1 = randomImage();
-  var random2 = randomImage();
-  var random3 = randomImage();
+//function creates 3 pictures in html by creating
+function renderpictureSet() {
+  var picture1 = document.createElement('img');
+  var picture2 = document.createElement('img');
+  var picture3 = document.createElement('img');
+  var random1 = randompicture();
+  var random2 = randompicture();
+  var random3 = randompicture();
 
   while (random2 === random1){
-    random2 = randomImage();
+    random2 = randompicture();
   }
   while (random3 === random1 || random3 === random2){
-    random3 = randomImage();
+    random3 = randompicture();
   }
 
   random1.numberOfTimesDisplayed++;
   random2.numberOfTimesDisplayed++;
   random3.numberOfTimesDisplayed++;
 
-  image1.src = random1.pictureFilePath;
-  image1.id = random1.name;
-  image2.src = random2.pictureFilePath;
-  image2.id = random2.name;
-  image3.src = random3.pictureFilePath;
-  image3.id = random3.name;
-  imageSection.appendChild(image1);
-  imageSection.appendChild(image2);
-  imageSection.appendChild(image3);
+  picture1.src = random1.pictureFilePath;
+  picture1.id = random1.name;
+  picture2.src = random2.pictureFilePath;
+  picture2.id = random2.name;
+  picture3.src = random3.pictureFilePath;
+  picture3.id = random3.name;
+  pictureSection.appendChild(picture1);
+  pictureSection.appendChild(picture2);
+  pictureSection.appendChild(picture3);
 }
 
 function showButtons(){
@@ -123,8 +125,8 @@ function handleClick(event) {
           // console.log(click.id);
         }
       });
-      imageSection.innerHTML = null;
-      renderImageSet();
+      pictureSection.innerHTML = null;
+      renderpictureSet();
       triesCounter++;
     } else if (triesCounter >= totalTries) {
       showButtons();
@@ -146,10 +148,9 @@ function handleButtonClick(event) {
 }
 //Code execution
 buildArray();
-console.log('Products Array: ' + productsArray);
 
-renderImageSet();
-imageSection.addEventListener('click', handleClick);
-// imageSection.removeEventListener('click', handleClick);
+renderpictureSet();
+pictureSection.addEventListener('click', handleClick);
+// pictureSection.removeEventListener('click', handleClick);
 var resultsSection = document.getElementById('results');
 resultsSection.addEventListener('click', handleButtonClick);
