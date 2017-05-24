@@ -1,168 +1,155 @@
-var imgArray = [];
-var labelMyImages = [];
-var timesOnScreen = [];
-var timesBeenClicked = [];
-var newClick = document.getElementById('show-image');
-var onlyClicks = 0;
+'use strict';
 
+var productsArray = [];
+var productNamesArray = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon',
+'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 
-var showImg = document.getElementById('show-image');
-var button2 = document.getElementById('button2');
-var button3 = document.getElementById('button3');
+var productPathsArray = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg',
+ 'dogDuck.jpg', 'dragon.jpg', 'pen.jpg', 'petSweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.jpg', 'tauntaun.jpg', 'unicorn.jpg', 'usb2.gif', 'waterCan.jpg', 'wineGlass.jpg'];
 
+var totalTries = 25;
+var triesCounter = 0;
 
-//Img constructor function with attributes
-function Images(imgName, filePath) {
-  this.imgName = imgName;
-  this.filePath = filePath;
-  this.newPath = 'img/' + this.filePath + ' />';
-  this.timesShown = 0;
-  this.timesClicked = 0;
-  //imgArray.push(this);
+var imageSection = document.getElementById('products');
+
+function Product(name, pictureFilePath){
+  this.name = name;
+  this.pictureFilePath = pictureFilePath;
+  this.numberOfTimesClicked = 0;
+  this.numberOfTimesDisplayed = 0;
+
+  productsArray.push(this);
 }
 
-//pushing in array
-function BuildArray() {
-  imgArray.push(new Images('bag','bag.jpg'));
-  imgArray.push(new Images('banana', 'banana.jpg'));
-  imgArray.push(new Images('bathroom', 'bathroom.jpg'));
-  imgArray.push(new Images('boots', 'boots.jpg'));
-  imgArray.push(new Images('breakfast', 'breakfast.jpg'));
-  imgArray.push(new Images('bubblegum', 'bubblegum.jpg'));
-  imgArray.push(new Images('chair', 'chair.jpg'));
-  imgArray.push(new Images('cthulhu', 'cthulhu.jpg'));
-  imgArray.push(new Images('dogDuck', 'dogDuck.jpg'));
-  imgArray.push(new Images('dragon', 'dragon.jpg'));
-  imgArray.push(new Images('pen', 'pen.jpg'));
-  imgArray.push(new Images('petSweep', 'petSweep.jpg'));
-  imgArray.push(new Images('scissors', 'scissors.jpg'));
-  imgArray.push(new Images('tauntaun', 'tauntaun.jpg'));
-  imgArray.push(new Images('unicorn', 'unicorn.jpg'));
-  imgArray.push(new Images('usb2', 'usb2.gif'));
-  imgArray.push(new Images('waterCan', 'waterCan.jpg'));
-  imgArray.push(new Images('wineGlass', 'wineGlass.jpg'));
-}
-//Array of random Numbers
-var threeDiffNums = [];
-
-function makeRand(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-
-function checkRandom () {
-  for (var i = 0; i < 3; i++) {
-    threeDiffNums.push(makeRand(0, 17));
-  }
-  while (threeDiffNums[0] === threeDiffNums[1]) {
-    console.log('Duplicate Found');
-    threeDiffNums[1] = makeRand(0,17);
-  }
-  while (threeDiffNums[2] === threeDiffNums[0] || threeDiffNums[2] === threeDiffNums[1]) {
-    console.log('Duplicate Found');
-    threeDiffNums[2] = makeRand(0,17);
+function buildArray(){
+  for(var i = 0; i < productNamesArray.length; i++){
+    var product = new Product(productNamesArray[i], 'img/' + productPathsArray[i]);
   }
 }
 
-function displayImg() {
-  showImg.innerHTML = ' ';
-  //var showImg = document.getElementById('show-image');
-  for (var q = 0; q < threeDiffNums.length; q++) {
-    var divEl = document.createElement('div');
-    divEl.innerHTML = '<img src=' + imgArray[threeDiffNums[q]].newPath;
-    showImg.appendChild(divEl);
-    imgArray[threeDiffNums[q]].timesShown++;
-  }
+function randomImage(){
+  var random = Math.floor(Math.random() * (productsArray.length));
+  return productsArray[random];
 }
 
-function gatherChartData() {
-  for (i = 0; i < imgArray.length; i++) {
-    labelMyImages.push(imgArray[i].imgName);
-    timesOnScreen.push(imgArray[i].timesShown);
-    timesBeenClicked.push(imgArray[i].timesClicked);
+function renderImageSet() {
+  var image1 = document.createElement('img');
+  var image2 = document.createElement('img');
+  var image3 = document.createElement('img');
+  var random1 = randomImage();
+  var random2 = randomImage();
+  var random3 = randomImage();
+
+  while (random2 === random1){
+    random2 = randomImage();
   }
+  while (random3 === random1 || random3 === random2){
+    random3 = randomImage();
+  }
+
+  random1.numberOfTimesDisplayed++;
+  random2.numberOfTimesDisplayed++;
+  random3.numberOfTimesDisplayed++;
+
+  image1.src = random1.pictureFilePath;
+  image1.id = random1.name;
+  image2.src = random2.pictureFilePath;
+  image2.id = random2.name;
+  image3.src = random3.pictureFilePath;
+  image3.id = random3.name;
+  imageSection.appendChild(image1);
+  imageSection.appendChild(image2);
+  imageSection.appendChild(image3);
 }
 
-var data = {
-  labels: labelMyImages,
-  datasets: [
-    {
-      label: 'Times Shown',
-      backgroundColor: 'rgba(255,99,132,0.2)',
-      borderColor: 'rgba(255,99,132,1)',
-      borderWidth: 1,
-      hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-      hoverBorderColor: 'rgba(255,99,132,1)',
-      data: timesOnScreen,
-      yAxisID: 'y-axis-0',
-    },
-    {
-      label: 'Times Selected',
-      backgroundColor: 'rgba(54,162,235,0.2)',
-      borderColor: 'rgba(54,162,235,1)',
-      borderWidth: 1,
-      hoverBackgroundColor: 'rgba(54,162,235,0.4)',
-      hoverBorderColor: 'rgba(54,162,235,1)',
-      data: timesBeenClicked,
-    }
-  ]
-};
+function showButtons(){
+  var resultsButton = document.getElementById('results-button');
+  var moreTriesButton = document.getElementById('more-tries-button');
+  moreTriesButton.hidden = false;
+  resultsButton.hidden = false;
+}
 
-function drawChart() {
-  gatherChartData();
-  var ctx = document.getElementById('my-chart3');
-  console.log(labelMyImages, ctx);
+function renderChart(){
+  var ctx = document.getElementById('results-chart');
+  var labels = [];
+  var numTimesClicked = [];
+  var numTimesDisplayed = [];
+  ctx.hidden = false;
+  for(var product = 0; product < productsArray.length; product++){
+    labels.push(productsArray[product].name);
+    numTimesClicked.push(productsArray[product].numberOfTimesClicked);
+    numTimesDisplayed.push(productsArray[product].numberOfTimesDisplayed);
+  }
+  console.log(labels);
+  console.log(numTimesClicked);
   var resultsChart = new Chart(ctx, {
     type: 'bar',
-    data: data,
-    //options: options
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '# of Clicks',
+        data: numTimesClicked,
+        backgroundColor: 'rgba(18, 4, 130,0.5)'
+      }, {
+        label: '# of Displays',
+        data: numTimesDisplayed,
+        backgroundColor: 'rgba(215, 125, 52, 0.5)'
+      }]
+    },
+    options: {
+      responsive: false,
+      scales: {
+        yAxes: [{
+          type: 'linear',
+          ticks: {
+            beginAtZero:true,
+            stepSize: 1
+          }
+        }]
+      }
+    }
   });
-  //myChart3.appendChild(ctx);
-  //chartDrawn = true;
 }
 
-// function hideChart() {
-//   document.getElementById('my-chart3').hidden = true;
-// }
-
-function handleClick() {
-  onlyClicks++;
-  console.log('Clicked ' + event.target.alt);
-  for (var q = 0; q < imgArray.length; q++) {
-    if (event.target.alt === imgArray[q].imgName) {
-      imgArray[q].timesClicked++;
+function handleClick(event) {
+  var click = event.target;
+  // console.log(click);
+  if(click.nodeName === 'IMG'){
+    if(triesCounter < totalTries){
+      productsArray.forEach(function(product){
+        if(product.name === click.id){
+          product.numberOfTimesClicked++;
+          // console.log(product);
+          // console.log(click.id);
+        }
+      });
+      imageSection.innerHTML = null;
+      renderImageSet();
+      triesCounter++;
+    } else if (triesCounter >= totalTries) {
+      showButtons();
     }
   }
-  threeDiffNums = [];
-  checkRandom();
-  displayImg();
-  if (onlyClicks === 25) {
-    document.getElementById('button2').style.visibility = 'visible';
-    document.getElementById('button3').style.visibility = 'visible';
-    showImg.style.visibility = 'hidden';
+}
+
+function handleButtonClick(event) {
+  var click = event.target;
+  if(click.id === 'results-button'){
+    click.hidden = true;
+    document.getElementById('more-tries-button').hidden = true;
+    renderChart();
+  } else if(click.id === 'more-tries-button'){
+    click.hidden = true;
+    document.getElementById('results-button').hidden = true;
+    triesCounter = triesCounter - 11;
   }
 }
+//Code execution
+buildArray();
+console.log('Products Array: ' + productsArray);
 
-function handleButton3() {
-  console.log('you done clicked on the button');
-  document.getElementById('button2').style.visibility = 'hidden';
-  document.getElementById('button3').style.visibility = 'hidden';
-  showImg.style.visibility = 'visible';
-  onlyClicks = 15;
-}
-
-function handleButton2() {
-  console.log('Done');
-  drawChart();
-}
-
-newClick.addEventListener('click', handleClick);
-button3.addEventListener('click', handleButton3);
-button2.addEventListener('click', handleButton2);
-
-document.getElementById('button2').style.visibility = 'hidden';
-document.getElementById('button3').style.visibility = 'hidden';
-
-checkRandom();
-BuildArray();
-displayImg();
+renderImageSet();
+imageSection.addEventListener('click', handleClick);
+// imageSection.removeEventListener('click', handleClick);
+var resultsSection = document.getElementById('results');
+resultsSection.addEventListener('click', handleButtonClick);
