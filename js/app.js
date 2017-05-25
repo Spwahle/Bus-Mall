@@ -55,9 +55,9 @@ function randomPictures() {
 }
 
 function render() {
-  for (var j = 0; j < 3; j++){
+  for (var i = 0; i < 3; i++) {
     var display = document.getElementById('display');
-    var imageObj = displayPictures[j];
+    var imageObj = displayPictures[i];
     var image = document.createElement('img');
     image.setAttribute('class', 'survey');
     image.setAttribute('src', imageObj.path);
@@ -69,9 +69,9 @@ function render() {
 }
 
 function clicker(selected) {
-  for (var k = 0; k < picturesArray.length; k++) {
-    if (picturesArray[k].name === selected) {
-      picturesArray[k].clickCount++;
+  for (var j = 0; j < picturesArray.length; j++) {
+    if (picturesArray[j].name === selected) {
+      picturesArray[j].clickCount++;
     }
   }
 }
@@ -95,10 +95,10 @@ function eventHandler() {
 
 
 function getChartData() {
-  for(var n = 0; n < picturesArray.length; n++) {
-    chartLabel.push(picturesArray[n].name);
-    chartClickData.push(picturesArray[n].clickCount);
-    chartDisplayData.push(picturesArray[n].displayCount);
+  for (var d = 0; d < picturesArray.length; d++) {
+    chartLabel.push(picturesArray[d].name);
+    chartClickData.push(picturesArray[d].clickCount);
+    chartDisplayData.push(picturesArray[d].displayCount);
   }
 }
 
@@ -120,25 +120,25 @@ function buildChart() {
       scales: {
         yAxes: [{
           ticks: {
-            beginAtZero:true
+            beginAtZero: true
           }
         }]
       }
     }
   });
 }
-
+//creating save function 
 function save() {
   localStorage.chartClickData = chartClickData;
   localStorage.chartDisplayData = chartDisplayData;
 }
-
+//loading localStorage if 25 clicks reached
 function load() {
   if (counter >= 24) {
-    for(var p = 0; p < picturesArray.length; p++) {
+    for (var p = 0; p < picturesArray.length; p++) {
       chartLabel.push(picturesArray[p].name);
     }
-
+//Using DOM to construct chart
     buildChart();
     var display = document.getElementById('display');
     var button = document.createElement('button');
@@ -146,7 +146,7 @@ function load() {
   }
 }
 
-
+//calliing functions
 randomPictures();
 render();
 load();
