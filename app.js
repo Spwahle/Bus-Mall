@@ -1,96 +1,156 @@
+'use strict';
+//defining array as empty
+var productsArray = [];
+//defining name of products
+var productNamesArray = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon',
+  'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
+//defining path of pictures in the img file
+var productPathsArray = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg',
+  'dogDuck.jpg', 'dragon.jpg', 'pen.jpg', 'petSweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.jpg', 'tauntaun.jpg', 'unicorn.jpg', 'usb2.gif', 'waterCan.jpg', 'wineGlass.jpg'];
+//defining amount of tries
+var totalTries = 25;
+var triesCounter = 0;
 
-//declaring a randomImg array and var
-var randomImg = [];
-var newClick = document.getElementById('show-image');
-//var counter = 0;
+var pictureSection = document.getElementById('products');
+//creating object with predefined vars
+function Product(name, pictureFilePath){
+  this.name = name;
+  this.pictureFilePath = pictureFilePath;
+  this.numberOfTimesClicked = 0;
+  this.numberOfTimesDisplayed = 0;
 
-var addRight = document.getElementById('add-right');
-var addCenter = document.getElementById('add-center');
-var addLeft = document.getElementById('add-left');
-var showImg = document.getElementById('show-image');
-
- //creating a constructor function with the attributes imgName and filePath
-function Picture(imgName, filePath) {
-  this.imgName = imgName;
-  this.filePath = filePath;
-  this.newPath = 'img/' + this.filePath +'.jpg>';
-  this.timesShown = 0;
-  this.timesClicked = 0;
-   //randomImg.push(this);
+  productsArray.push(this);
 }
-
- //pushing in array while also creating elements with constructor function
-randomImg.push(new Picture('bag','bag'));
-randomImg.push(new Picture('banana', 'banana'));
-randomImg.push(new Picture('bathroom', 'bathroom'));
-randomImg.push(new Picture('boots', 'boots'));
-randomImg.push(new Picture('breakfast', 'breakfast'));
-randomImg.push(new Picture('bubblegum', 'bubblegum'));
-randomImg.push(new Picture('chair', 'chair'));
-randomImg.push(new Picture('cthulhu', 'cthulhu'));
-randomImg.push(new Picture('dogDuck', 'dogDuck'));
-randomImg.push(new Picture('dragon', 'dragon'));
-randomImg.push(new Picture('pen', 'pen'));
-randomImg.push(new Picture('petSweep', 'petSweep'));
-randomImg.push(new Picture('scissors', 'scissors'));
-randomImg.push(new Picture('tauntaun', 'tauntaun'));
-randomImg.push(new Picture('unicorn', 'unicorn'));
-randomImg.push(new Picture('usb', 'usb'));
-randomImg.push(new Picture('waterCan', 'waterCan'));
-randomImg.push(new Picture('wineGlass', 'wineGlass'));
-
-
-function doMath() {
-  return Math.floor(Math.random() * randomImg.length);
-}
-
-function genertateThree () {
-
-  var img1 = doMath(Picture);
-
-  var liEl1 = document.createElement('li');
-  liEl1.innerHTML = '<img src=' + randomImg[img1].newPath;
-  showImg.appendChild(liEl1);
-
-  var img2 = doMath(Picture);
-
-  while (img1 === img2) {
-    img2 = doMath(Picture);
-  }
-
-  var liEl2 = document.createElement('li');
-  liEl2.innerHTML = '<img src=' + randomImg[img2].newPath;
-  showImg.appendChild(liEl2);
-
-  var img3 = doMath(Picture);
-
-  while (img3 === img1 || img3 === img2) {
-    img3 = doMath(Picture);
-  }
-
-  var liEl3 = document.createElement('li');
-  liEl3.innerHTML = '<img src=' + randomImg[img3].newPath;
-  showImg.appendChild(liEl3);
-
-  function increaseTimesClicked () {
-    Picture.timesClicked += 1;
+//function runs a loop through lenght of namesarray in which it creates objects via my constructor
+function buildArray(){
+  for(var i = 0; i < productNamesArray.length; i++){
+    var product = new Product(productNamesArray[i], 'img/' + productPathsArray[i]);
   }
 }
+//function creates a random number to
+function randompicture(){
+  var random = Math.floor(Math.random() * (productsArray.length));
+  return productsArray[random];
+}
 
-function handleClick (event) {
-  console.log(event);
-  event.preventDefault ();
+//function creates 3 pictures in html by creating
+function renderpictureSet() {
+  var picture1 = document.createElement('img');
+  var picture2 = document.createElement('img');
+  var picture3 = document.createElement('img');
+  var random1 = randompicture();
+  var random2 = randompicture();
+  var random3 = randompicture();
 
-  newClick.addEventListener('click', increaseTimesClicked);
+  while (random2 === random1){
+    random2 = randompicture();
+  }
+  while (random3 === random1 || random3 === random2){
+    random3 = randompicture();
+  }
 
-  for (i = 0; i <25; i++) {
-    genertateThree(Picture);
+  random1.numberOfTimesDisplayed++;
+  random2.numberOfTimesDisplayed++;
+  random3.numberOfTimesDisplayed++;
+
+  picture1.src = random1.pictureFilePath;
+  picture1.id = random1.name;
+  picture2.src = random2.pictureFilePath;
+  picture2.id = random2.name;
+  picture3.src = random3.pictureFilePath;
+  picture3.id = random3.name;
+  pictureSection.appendChild(picture1);
+  pictureSection.appendChild(picture2);
+  pictureSection.appendChild(picture3);
+}
+
+function showButtons(){
+  var resultsButton = document.getElementById('results-button');
+  var moreTriesButton = document.getElementById('more-tries-button');
+  moreTriesButton.hidden = false;
+  resultsButton.hidden = false;
+}
+
+function renderChart(){
+  var ctx = document.getElementById('results-chart');
+  var labels = [];
+  var numTimesClicked = [];
+  var numTimesDisplayed = [];
+  ctx.hidden = false;
+  for(var product = 0; product < productsArray.length; product++){
+    labels.push(productsArray[product].name);
+    numTimesClicked.push(productsArray[product].numberOfTimesClicked);
+    numTimesDisplayed.push(productsArray[product].numberOfTimesDisplayed);
+  }
+  console.log(labels);
+  console.log(numTimesClicked);
+  var resultsChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '# of Clicks',
+        data: numTimesClicked,
+        backgroundColor: 'rgba(18, 4, 130,0.5)'
+      }, {
+        label: '# of Displays',
+        data: numTimesDisplayed,
+        backgroundColor: 'rgba(215, 125, 52, 0.5)'
+      }]
+    },
+    options: {
+      responsive: false,
+      scales: {
+        yAxes: [{
+          type: 'linear',
+          ticks: {
+            beginAtZero:true,
+            stepSize: 1
+          }
+        }]
+      }
+    }
+  });
+}
+
+function handleClick(event) {
+  var click = event.target;
+  // console.log(click);
+  if(click.nodeName === 'IMG'){
+    if(triesCounter < totalTries){
+      productsArray.forEach(function(product){
+        if(product.name === click.id){
+          product.numberOfTimesClicked++;
+          // console.log(product);
+          // console.log(click.id);
+        }
+      });
+      pictureSection.innerHTML = null;
+      renderpictureSet();
+      triesCounter++;
+    } else if (triesCounter >= totalTries) {
+      showButtons();
+    }
   }
 }
 
-genertateThree();
- // var li2 = document.createElement('li');
- // li2.innerHTML = '<img src='  pic[index2].path  ' />';
- // appendImg2.appendChild(li2);
+function handleButtonClick(event) {
+  var click = event.target;
+  if(click.id === 'results-button'){
+    click.hidden = true;
+    document.getElementById('more-tries-button').hidden = true;
+    renderChart();
+  } else if(click.id === 'more-tries-button'){
+    click.hidden = true;
+    document.getElementById('results-button').hidden = true;
+    triesCounter = triesCounter - 11;
+  }
+}
+//Code execution
+buildArray();
 
-doMath();
+renderpictureSet();
+pictureSection.addEventListener('click', handleClick);
+// pictureSection.removeEventListener('click', handleClick);
+var resultsSection = document.getElementById('results');
+resultsSection.addEventListener('click', handleButtonClick);
