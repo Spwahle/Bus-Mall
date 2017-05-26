@@ -8,17 +8,29 @@ var chartClickData = [];
 var chartDisplayData = [];
 var counter = 0;
 
+<<<<<<< HEAD
+//this if loop checks to see if local data exists in the file
+if (localStorage.chartClickData && localStorage.chartDisplayData) {
+  chartClickData = localStorage.chartClickData.split(',');
+  chartDisplayData = localStorage.chartDisplayData.split(',');
+  counter = 24;
+=======
 //this if loop checks to see if local data exists in the file turns splits array
 if (localStorage.chartClickData && localStorage.chartDisplayData) {
   chartClickData = localStorage.chartClickData.split(',');
   chartDisplayData = localStorage.chartDisplayData.split(',');
   counter = 25;
+>>>>>>> master
 }
 //constructor function to make my objects
 function PictureOption(name, path) {
   this.name = name;
   this.path = path;
+<<<<<<< HEAD
+  this.displayCount = 0;
+=======
   this.shownCount = 0;
+>>>>>>> master
   this.clickCount = 0;
   picturesArray.push(this);
 }
@@ -44,7 +56,11 @@ new PictureOption('water-can', 'img/waterCan.jpg');
 new PictureOption('wine-glass', 'img/wineGlass.jpg');
 
 // console.log('in array:', picturesArray);
+<<<<<<< HEAD
+//
+=======
 //function designed to create a random picutres and make sure it's not duplicating
+>>>>>>> master
 function randomPictures() {
   while (displayPictures.length !== 3) {
     var image = picturesArray[Math.floor(Math.random() * picturesArray.length)];
@@ -53,7 +69,11 @@ function randomPictures() {
     }
   }
 }
+<<<<<<< HEAD
+
+=======
 //quering the DOM and setting
+>>>>>>> master
 function render() {
   for (var i = 0; i < 3; i++) {
     var display = document.getElementById('display');
@@ -64,8 +84,12 @@ function render() {
     image.setAttribute('id', imageObj.name);
     display.appendChild(image);
     image.addEventListener('click', eventHandler);
+<<<<<<< HEAD
+    imageObj.displayCount++;
+=======
     imageObj.shownCount++;
 
+>>>>>>> master
   }
 }
 
@@ -99,7 +123,11 @@ function getChartData() {
   for (var d = 0; d < picturesArray.length; d++) {
     chartLabel.push(picturesArray[d].name);
     chartClickData.push(picturesArray[d].clickCount);
+<<<<<<< HEAD
+    chartDisplayData.push(picturesArray[d].displayCount);
+=======
     chartDisplayData.push(picturesArray[d].shownCount);
+>>>>>>> master
   }
 }
 
@@ -128,10 +156,14 @@ function buildChart() {
     }
   });
 }
+<<<<<<< HEAD
+//creating save function 
+=======
 
 
 
 //creating save function
+>>>>>>> master
 function save() {
   localStorage.chartClickData = chartClickData;
   localStorage.chartDisplayData = chartDisplayData;
@@ -142,6 +174,10 @@ function load() {
     for (var p = 0; p < picturesArray.length; p++) {
       chartLabel.push(picturesArray[p].name);
     }
+<<<<<<< HEAD
+//Using DOM to construct chart
+=======
+>>>>>>> master
     buildChart();
     var display = document.getElementById('display');
     var button = document.createElement('button');
